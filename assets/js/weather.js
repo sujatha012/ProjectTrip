@@ -17,8 +17,8 @@ function getCurrentWeather(latlong) {
     var ob = new aeris.api.models.Observation({
         id: latlong
     });
+
     ob.fetch().done(function (response) {
-    console.log(response);
         currentWeatherData.push({
             status: 'success',
             currentTemp: response.response.ob.tempF,
@@ -27,8 +27,6 @@ function getCurrentWeather(latlong) {
         });
 
     }).fail(function (err) {
-
-        console.log(JSON.stringify(err).toString());
         currentWeatherData.push({
             status: 'error',
             error_code: err.code,
