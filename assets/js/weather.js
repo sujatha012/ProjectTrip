@@ -13,12 +13,20 @@ aeris.config.set({
  */
 function getCurrentWeather(latlong) {
     var currentWeatherData = [];
-    if (latlong.trim() === "") return "Please provide latitude and longitude OR zipCode OR City, State";
-    var ob = new aeris.api.models.Observation({
+    if (latlong.trim() === "")
+    {
+        currentWeatherData.push({
+            status: 'error',
+            error_code: 'Invalid Parameters',
+            error_mesage: 'Please provide valid params - Latitude,Longitude OR City, State OR Zipcode'
+        });
+        return currentWeatherData;
+    }
+    var currentWeather = new aeris.api.models.Observation({
         id: latlong
     });
 
-    ob.fetch().done(function (response) {
+    currentWeather.fetch().done(function (response) {
         currentWeatherData.push({
             status: 'success',
             currentTemp: response.response.ob.tempF,
@@ -33,7 +41,7 @@ function getCurrentWeather(latlong) {
             error_mesage: err.message
 
         });
-        return currentWeatherData;
+
     });
 
     return currentWeatherData;
